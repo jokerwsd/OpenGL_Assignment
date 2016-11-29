@@ -99,7 +99,6 @@ bool glfunc::renderGL(GLFWwindow* window)
 	{
 		glNormal3f(normals[i].x, normals[i].y, normals[i].z);
 		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-		glfwSwapBuffers(window);
 	}
 
 	glEnd();

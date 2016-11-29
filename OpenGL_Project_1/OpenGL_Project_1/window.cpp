@@ -25,7 +25,8 @@ window::window(int width, int height, const std::string& title)
 
 	//glfwSetWindowSizeCallback(MainWindow, handleResize); //callback function of GLFW to handle window resize
 	//glfwSetKeyCallback(MainWindow, handleKeypress); //callback function to handle keypress
-
+	glewExperimental = GL_TRUE;//GLEW has trouble accessing
+							   //some parts of the OpenGL core profile by default
 	if (glewInit() != GLEW_OK)
 		throw std::exception("Failed to initialize GLEW\n");
 	// run while the window is open

@@ -2,22 +2,31 @@
 #include "glfunc.h"
 #include "window.h"
 #include "methods.h"
+#include "mesh.h"
 
 static const int SCREEN_WIDTH = 800;
 static const int SCREEN_HEIGHT = 800;
 
-vector<glm::vec3> vertices;
-vector<glm::vec2> uvs;
-vector<glm::vec3> normals;
-
 int main()
 {
 	bool isRunning = true;
+
 	window window((int)800, int(800), "Main Window");
+
+	vertex vertices[] = {
+		vertex(glm::vec3(-0.5,-0.5,0)),
+		vertex(glm::vec3(0,0.5,0)),
+		vertex(glm::vec3(0.5,0,-0.5)),};
+
+	mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+
 	while (1)
 	{
 		// Clear the color and depth buffers.
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		mesh.draw();
+#if 0
 		// We don't want to modify the projection matrix. */
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
@@ -33,7 +42,7 @@ int main()
 		glVertex3f(1, 0, 0);
 		glVertex3f(0, 1, 0);
 		glEnd();
-
+#endif
 		window.swapBuffers();
 	}
 
