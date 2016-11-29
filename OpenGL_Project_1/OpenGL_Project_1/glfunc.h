@@ -5,6 +5,8 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "methods.h"
+#include "window.h"
+
 
 class glfunc
 {
@@ -14,7 +16,7 @@ public:
 	virtual ~glfunc();
 	bool initGL();
 	bool resizeGL(int width, int height);
-	bool renderGL();
+	bool renderGL(GLFWwindow* window);
 
 private:
 	int width;

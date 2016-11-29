@@ -1,7 +1,6 @@
 #ifndef _METHODS_H
 #define _METHODS_H
-
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <vector>
 #include <string>
 #include <cstring>

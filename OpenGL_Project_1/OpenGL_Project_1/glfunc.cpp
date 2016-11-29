@@ -77,7 +77,7 @@ bool glfunc::resizeGL(int width, int height)
 
 }
 
-bool glfunc::renderGL()
+bool glfunc::renderGL(GLFWwindow* window)
 {
 	/* These are to calculate our fps */
 	static GLint T0 = 0;
@@ -99,6 +99,7 @@ bool glfunc::renderGL()
 	{
 		glNormal3f(normals[i].x, normals[i].y, normals[i].z);
 		glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
+		glfwSwapBuffers(window);
 	}
 
 	glEnd();
