@@ -16,6 +16,7 @@ shader::shader(const std::string& filename)
 		glAttachShader(program, shaders[i]);
 
 	glBindAttribLocation(program, 0, "position");
+	glBindAttribLocation(program, 1, "texCoord");
 
 	glLinkProgram(program);
 	CheckShaderError(program, GL_LINK_STATUS, true, "Program failed to link");
@@ -49,7 +50,7 @@ GLuint shader::CreateShader(const std::string& text, GLenum shaderType)
 
 	const GLchar* shaderSourceStrings[1];
 	shaderSourceStrings[0] = text.c_str();
-	cout << "ShaderSourceString                : " << shaderSourceStrings[0] << endl;
+	//cout << "ShaderSourceString                : " << shaderSourceStrings[0] << endl;
 	GLint shaderSourceStringlengths[1];
 	shaderSourceStringlengths[0] = text.length();
 

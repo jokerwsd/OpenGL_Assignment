@@ -10,20 +10,20 @@
 struct vertex
 {
 public: 
-	vertex(const glm::vec3& pos)
+	vertex(const glm::vec3& pos, const glm::vec2& texCoord)
 //		, const glm::vec2& texCoord, const glm::vec3& normal	
 	{
 		this->pos = pos;
-//		this->texCoord = texCoord;
+		this->texCoord = texCoord;
 //		this->normal = normal;
 	}
 	glm::vec3* GetPos() { return &pos; }
-//	glm::vec2* GetTexCoord() { return &texCoord; }
+	glm::vec2* GetTexCoord() { return &texCoord; }
 //	glm::vec3* GetNormal() { return &normal; }
 
 private:
 	glm::vec3 pos;
-//	glm::vec2 texCoord;
+	glm::vec2 texCoord;
 //	glm::vec3 normal;
 };
 
@@ -37,6 +37,8 @@ private:
 	enum
 	{
 		POSITION_VB,
+		TEXCOORD_VB,
+
 		NUM_BUFFERS
 	};
 

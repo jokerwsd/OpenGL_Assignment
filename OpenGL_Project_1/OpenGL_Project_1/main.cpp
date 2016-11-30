@@ -2,6 +2,7 @@
 #include "shader.h"
 #include "mesh.h"
 #include "window.h"
+#include "texture.h"
 
 //#include "glfunc.h"
 //#include "methods.h"
@@ -14,19 +15,22 @@ int main()
 	window window((int)800, int(800), "Main Window");
 
 	vertex vertices[] = {
-		vertex(glm::vec3(-0.5,-0.5,0)),
-		vertex(glm::vec3(0,0.5,0)),
-		vertex(glm::vec3(0.5,0,-0.5)),};
+		vertex(glm::vec3(-0.5,-0.5,0), glm::vec2(0,0)),
+		vertex(glm::vec3(0,0.5,0) ,glm::vec2(0.5,1.0)),
+		vertex(glm::vec3(0.5,-0.5,0), glm::vec2(1.0,0)),};
 
 	mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
 
 	shader shader("basicShader");
+
+	texture texture("bricks.jpg");
 
 	while (!glfwWindowShouldClose(window.MainWindow))
 	{
 		// Clear the color and depth buffers.
 		window.clear(0.0f, 0.15f, 0.3f, 1.0f);
 		shader.Bind();
+		texture.Bind(0);
 		mesh.draw();
 		window.swapBuffers();	
 	}
