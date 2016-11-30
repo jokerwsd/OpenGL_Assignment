@@ -1,16 +1,16 @@
 #include <iostream>
-#include "glfunc.h"
-#include "window.h"
-#include "methods.h"
+#include "shader.h"
 #include "mesh.h"
+#include "window.h"
+
+//#include "glfunc.h"
+//#include "methods.h"
 
 static const int SCREEN_WIDTH = 800;
-static const int SCREEN_HEIGHT = 800;
+static const int SCREEN_HEIGHT = 600;
 
 int main()
 {
-	bool isRunning = true;
-
 	window window((int)800, int(800), "Main Window");
 
 	vertex vertices[] = {
@@ -20,30 +20,15 @@ int main()
 
 	mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
 
-	while (1)
+	shader shader("basicShader");
+
+	while (!glfwWindowShouldClose(window.MainWindow))
 	{
 		// Clear the color and depth buffers.
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		window.clear(0.0f, 0.15f, 0.3f, 1.0f);
+		shader.Bind();
 		mesh.draw();
-#if 0
-		// We don't want to modify the projection matrix. */
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		//glTranslatef( 0.0f, 0.0f, -6.0f );
-		// Move down the z-axis.
-		glTranslatef(0.0, 0.0, -5.0);
-		glRotatef(120, 1.0, 1.0, 0.0);
-
-
-		glBegin(GL_TRIANGLES);
-		glColor3f(0.1, 0.2, 0.3);
-		glVertex3f(0, 0, 0);
-		glVertex3f(1, 0, 0);
-		glVertex3f(0, 1, 0);
-		glEnd();
-#endif
-		window.swapBuffers();
+		window.swapBuffers();	
 	}
 
 #if 0
@@ -106,6 +91,6 @@ int main()
 		gl->renderGL(MainWindow);
 	}
 #endif
-
 	return 0;
 }
+

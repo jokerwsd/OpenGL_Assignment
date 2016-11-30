@@ -1,5 +1,6 @@
 #ifndef MESH_INCLUDED_H
 #define MESH_INCLUDED_H
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <string>
@@ -16,7 +17,7 @@ public:
 //		this->texCoord = texCoord;
 //		this->normal = normal;
 	}
-//	glm::vec3* GetPos() { return &pos; }
+	glm::vec3* GetPos() { return &pos; }
 //	glm::vec2* GetTexCoord() { return &texCoord; }
 //	glm::vec3* GetNormal() { return &normal; }
 

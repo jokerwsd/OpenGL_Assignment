@@ -7,20 +7,20 @@
 class window
 {
 public:
-	window();
 	window(int width, int height, const std::string& title);
+
 	void clear(float r, float g, float b, float a);
 	void swapBuffers();
-	virtual ~window();
 
+	virtual ~window();
+	
+	GLFWwindow* MainWindow;
 //	void windowResize(GLFWwindow* main_window, int width, int height);
 		
 protected:
 private:
 //	int width;
 //	int height;
-
-	GLFWwindow* MainWindow;
 
 };
 

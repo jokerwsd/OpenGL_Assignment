@@ -1,7 +1,5 @@
 #include "mesh.h"
 
-
-
 mesh::mesh(vertex* vertices, unsigned int numVertices)
 {
 	drawCount = numVertices;

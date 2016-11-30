@@ -2,11 +2,7 @@
 #include "window.h"
 #include <iostream>
 
-window::window()
-{
-}
-
-
+using namespace std;
 window::window(int width, int height, const std::string& title)
 {
 	if (!glfwInit()) throw std::runtime_error("glfwInitWindow failed. Can your hardware handle OpenGL 4.2?");
@@ -21,19 +17,29 @@ window::window(int width, int height, const std::string& title)
 
 	if (!MainWindow)
 		throw std::runtime_error("glfwOpenWindow failed. Can your hardware handle OpenGL 4.2?");
+	
 	glfwMakeContextCurrent(MainWindow);
 
+	cout << "GLFW version                : " << glfwGetVersionString() << endl;
+	cout << "GLEW_VERSION                : " << glewGetString(GLEW_VERSION) << endl;
+	cout << "GL_VERSION                  : " << glGetString(GL_VERSION) << endl;
+	cout << "GL_VENDOR                   : " << glGetString(GL_VENDOR) << endl;
+	cout << "GL_RENDERER                 : " << glGetString(GL_RENDERER) << endl;
+	cout << "GL_SHADING_LANGUAGE_VERSION : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << endl;
 	//glfwSetWindowSizeCallback(MainWindow, handleResize); //callback function of GLFW to handle window resize
 	//glfwSetKeyCallback(MainWindow, handleKeypress); //callback function to handle keypress
 	glewExperimental = GL_TRUE;//GLEW has trouble accessing
 							   //some parts of the OpenGL core profile by default
+	glewInit();
 	if (glewInit() != GLEW_OK)
 		throw std::exception("Failed to initialize GLEW\n");
 	// run while the window is open
 
 	glEnable(GL_DEPTH_TEST);
 
-	glEnable(GL_CULL_FACE);
+//	glEnable(GL_CULL_FACE);
+	glDepthFunc(GL_LESS); // depth-testing interprets a smaller value as "closer"
+
 	glCullFace(GL_BACK);
 }
 
@@ -51,8 +57,8 @@ void window::clear(float r, float g, float b, float a)
 
 void window::swapBuffers()
 {
-	glfwSwapBuffers(MainWindow);
 	glfwPollEvents();
+	glfwSwapBuffers(MainWindow);
 }
 
 #if 0
