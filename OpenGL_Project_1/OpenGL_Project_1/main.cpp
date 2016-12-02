@@ -4,6 +4,7 @@
 #include "window.h"
 #include "texture.h"
 #include "transform.h"
+#include "camera.h"
 
 //#include "glfunc.h"
 //#include "methods.h"
@@ -25,6 +26,9 @@ int main()
 	shader shader("basicShader");
 
 	texture texture("bricks.jpg");
+
+	camera camera(glm::vec3(0, 0, -2), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
+
 	transform transform;
 
 	float counter = 0.0f;
@@ -37,20 +41,23 @@ int main()
 		float sinCounter = sinf(counter);
 		float cosCounter = cosf(counter);
 
-		transform.GetPos().x = sinf(counter);
-		transform.GetRot().z = counter;
-		transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
+		transform.GetPos().x = sinCounter;
+		transform.GetRot().z = cosCounter;
+		transform.GetRot().x = counter * 50;
+		transform.GetRot().y = counter * 50;
+		transform.GetRot().z = counter * 50;
+		//transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
 
 		shader.Bind();
 		texture.Bind(0);
-		shader.Update(transform);
+		shader.Update(transform, camera);
 
 		
 
 		
 		mesh.draw();
 		window.swapBuffers();	
-		counter += 0.001f;
+		counter += 0.0001f;
 	}
 
 #if 0
