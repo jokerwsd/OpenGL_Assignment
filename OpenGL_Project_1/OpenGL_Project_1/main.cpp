@@ -3,6 +3,7 @@
 #include "mesh.h"
 #include "window.h"
 #include "texture.h"
+#include "transform.h"
 
 //#include "glfunc.h"
 //#include "methods.h"
@@ -24,15 +25,32 @@ int main()
 	shader shader("basicShader");
 
 	texture texture("bricks.jpg");
+	transform transform;
+
+	float counter = 0.0f;
 
 	while (!glfwWindowShouldClose(window.MainWindow))
 	{
 		// Clear the color and depth buffers.
 		window.clear(0.0f, 0.15f, 0.3f, 1.0f);
+
+		float sinCounter = sinf(counter);
+		float cosCounter = cosf(counter);
+
+		transform.GetPos().x = sinf(counter);
+		transform.GetRot().z = counter;
+		transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
+
 		shader.Bind();
 		texture.Bind(0);
+		shader.Update(transform);
+
+		
+
+		
 		mesh.draw();
 		window.swapBuffers();	
+		counter += 0.001f;
 	}
 
 #if 0

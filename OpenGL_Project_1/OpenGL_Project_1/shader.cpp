@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "transform.h"
 
 using namespace std;
 
@@ -23,6 +24,9 @@ shader::shader(const std::string& filename)
 
 	glValidateProgram(program);
 	CheckShaderError(program, GL_VALIDATE_STATUS, true, "Error: Invalid shader program ");
+
+	uniforms[TRANSFORM_U] = glGetUniformLocation(program, "transform");
+
 }
 
 
@@ -40,6 +44,14 @@ shader::~shader()
 void shader::Bind()
 {
 	glUseProgram(program);
+}
+
+void shader::Update(const transform& transform)
+{
+	glm::mat4 model = transform.GetModel();
+
+	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
+
 }
 
 GLuint shader::CreateShader(const std::string& text, GLenum shaderType)
