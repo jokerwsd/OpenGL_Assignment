@@ -21,13 +21,17 @@ int main()
 		vertex(glm::vec3(0,0.5,0) ,glm::vec2(0.5,1.0)),
 		vertex(glm::vec3(0.5,-0.5,0), glm::vec2(1.0,0)),};
 
-	mesh mesh(vertices, sizeof(vertices) / sizeof(vertices[0]));
+	unsigned int indices[] = { 0, 1, 2 };
+
+	mesh mesh1(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+
+	mesh mesh2("monkey.obj");
 
 	shader shader("basicShader");
 
 	texture texture("bricks.jpg");
 
-	camera camera(glm::vec3(0, 0, -2), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
+	camera camera(glm::vec3(0, 0, -4), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
 
 	transform transform;
 
@@ -55,7 +59,7 @@ int main()
 		
 
 		
-		mesh.draw();
+		mesh2.draw();
 		window.swapBuffers();	
 		counter += 0.0001f;
 	}

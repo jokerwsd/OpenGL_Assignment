@@ -1,9 +1,30 @@
 #include "mesh.h"
+#include "obj_loader.h"
 #include <vector>
 
-mesh::mesh(vertex* vertices, unsigned int numVertices)
+mesh::mesh(const std::string& filename)
 {
-	drawCount = numVertices;
+	IndexedModel model = OBJModel(filename).ToIndexedModel();
+	InitMesh(model);
+}
+
+mesh::mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
+{
+
+	IndexedModel model;
+	for (unsigned int i = 0; i < numVertices; i++)
+	{
+		model.positions.push_back(*vertices[i].GetPos());
+		model.texCoords.push_back(*vertices[i].GetTexCoord());
+	}
+
+	for (unsigned int i = 0; i < numIndices; i++)
+		model.indices.push_back(indices[i]);
+
+	InitMesh(model);
+
+#if 0	
+	drawCount = numIndices;
 	glGenVertexArrays(1, &vertexArrayObject);
 	glBindVertexArray(vertexArrayObject);
 
@@ -29,14 +50,20 @@ mesh::mesh(vertex* vertices, unsigned int numVertices)
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);//discribe the array data type
 
 	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
-	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[TEXCOORD_VB]);
 	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(texCoords[0]), &texCoords[0], GL_STATIC_DRAW);
 
 
 	glEnableVertexAttribArray(1);//locate the specific attibute arrays
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);//discribe the array data type
 
+	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexArrayBuffers[INDEX_VB]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(indices[0]), &indices[0], GL_STATIC_DRAW);
+
 	glBindVertexArray(0);
+
+#endif
 }
 
 
@@ -45,9 +72,39 @@ mesh::~mesh()
 	glDeleteVertexArrays(1, &vertexArrayObject);
 }
 
+void mesh::InitMesh(const IndexedModel& model)
+{
+	drawCount = model.indices.size();
+	
+	glGenVertexArrays(1, &vertexArrayObject);
+	glBindVertexArray(vertexArrayObject);
+
+	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[POSITION_VB]);
+	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.positions[0]), &model.positions[0], GL_STATIC_DRAW);
+
+
+	glEnableVertexAttribArray(0);//locate the specific attibute arrays
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);//discribe the array data type
+
+	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[TEXCOORD_VB]);
+	glBufferData(GL_ARRAY_BUFFER, model.positions.size() * sizeof(model.texCoords[0]), &model.texCoords[0], GL_STATIC_DRAW);
+
+
+	glEnableVertexAttribArray(1);//locate the specific attibute arrays
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);//discribe the array data type
+
+	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexArrayBuffers[INDEX_VB]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, model.indices.size() * sizeof(model.indices[0]), &model.indices[0], GL_STATIC_DRAW);
+
+	glBindVertexArray(0);
+}
+
 void mesh::draw()
 {
 	glBindVertexArray(vertexArrayObject);
-	glDrawArrays(GL_TRIANGLES, 0, drawCount);//draw all the data we have in the buffer
+	glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);//draw all the data we have in the buffer
 	glBindVertexArray(0);
 }

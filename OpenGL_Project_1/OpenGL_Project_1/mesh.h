@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
-//#include "obj_loader.h"
+#include "obj_loader.h"
 
 struct vertex
 {
@@ -30,15 +30,18 @@ private:
 class mesh
 {
 public:
-	mesh(vertex* vertices, unsigned int numVertices);
+	mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
+	mesh(const std::string& filename);
+
 	void draw();
 	virtual ~mesh();
 private:
+	void InitMesh(const IndexedModel& model);
 	enum
 	{
 		POSITION_VB,
 		TEXCOORD_VB,
-
+		INDEX_VB,
 		NUM_BUFFERS
 	};
 
