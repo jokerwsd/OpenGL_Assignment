@@ -16,14 +16,17 @@ int main()
 {
 	window window((int)800, int(800), "Main Window");
 
+#if 0
 	vertex vertices[] = {
 		vertex(glm::vec3(-0.5,-0.5,0), glm::vec2(0,0)),
 		vertex(glm::vec3(0,0.5,0) ,glm::vec2(0.5,1.0)),
 		vertex(glm::vec3(0.5,-0.5,0), glm::vec2(1.0,0)),};
+		
 
 	unsigned int indices[] = { 0, 1, 2 };
 
 	mesh mesh1(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
+#endif
 
 	mesh mesh2("monkey.obj");
 
@@ -47,9 +50,9 @@ int main()
 
 		transform.GetPos().x = sinCounter;
 		transform.GetRot().z = cosCounter;
-		transform.GetRot().x = counter * 50;
-		transform.GetRot().y = counter * 50;
-		transform.GetRot().z = counter * 50;
+		transform.GetRot().x = counter * 10;
+		transform.GetRot().y = counter * 10;
+		transform.GetRot().z = counter * 10;
 		//transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
 
 		shader.Bind();

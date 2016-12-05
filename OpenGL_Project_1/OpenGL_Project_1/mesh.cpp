@@ -16,6 +16,7 @@ mesh::mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, un
 	{
 		model.positions.push_back(*vertices[i].GetPos());
 		model.texCoords.push_back(*vertices[i].GetTexCoord());
+		model.normals.push_back(*vertices[i].GetNormal());
 	}
 
 	for (unsigned int i = 0; i < numIndices; i++)
@@ -94,6 +95,14 @@ void mesh::InitMesh(const IndexedModel& model)
 
 	glEnableVertexAttribArray(1);//locate the specific attibute arrays
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, 0);//discribe the array data type
+
+	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexArrayBuffers[NORMAL_VB]);
+	glBufferData(GL_ARRAY_BUFFER, model.normals.size() * sizeof(model.normals[0]), &model.normals[0], GL_STATIC_DRAW);
+
+
+	glEnableVertexAttribArray(2);//locate the specific attibute arrays
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, 0);//discribe the array data type
 
 	glGenBuffers(NUM_BUFFERS, vertexArrayBuffers);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vertexArrayBuffers[INDEX_VB]);
