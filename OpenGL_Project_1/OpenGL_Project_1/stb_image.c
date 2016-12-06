@@ -207,7 +207,7 @@ static void stbi_rewind(stbi *s)
 {
    // conceptually rewind SHOULD rewind to the beginning of the stream,
    // but we just rewind to the beginning of the initial buffer, because
-   // we only use it after doing 'test', which only ever looks at at most 92 bytes
+   // we only use it after doing 'test', which only ever at most 92 bytes
    s->img_buffer = s->img_buffer_original;
 }
 

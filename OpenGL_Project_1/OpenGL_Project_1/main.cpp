@@ -11,10 +11,11 @@
 
 static const int SCREEN_WIDTH = 800;
 static const int SCREEN_HEIGHT = 600;
+using namespace cameraControl;
 
 int main()
 {
-	window window((int)800, int(800), "Main Window");
+	window window1((int)800, int(800), "Main Window");
 
 #if 0
 	vertex vertices[] = {
@@ -30,40 +31,49 @@ int main()
 
 	mesh mesh2("monkey.obj");
 
-	shader shader("basicShader");
+	shader shader1("basicShader");
 
-	texture texture("bricks.jpg");
+	texture texture1("bricks.jpg");
 
-	camera camera(glm::vec3(0, 0, -4), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
+	camera camera1(glm::vec3(0, 0, -4), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
+	
+//	trackball trackball1(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
+//	trackball trackball1 = trackball::GetInstance(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
+	trackball* trackball1 = &trackball::GetInstance(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
+	trackball1->Init(&window1);
 
-	transform transform;
+	transform transform1;
 
 	float counter = 0.0f;
 
-	while (!glfwWindowShouldClose(window.MainWindow))
+	while (!glfwWindowShouldClose(window1.MainWindow))
 	{
 		// Clear the color and depth buffers.
-		window.clear(0.0f, 0.15f, 0.3f, 1.0f);
+		window1.clear(0.0f, 0.15f, 0.3f, 1.0f);
 
+		trackball1->Update();
+//		glm::mat4 myCameraMatrix = camera1.m_viewMatr;
+//		glm::mat4 mvp = camera1.GetViewProjection() * camera1.m_viewMatr * transform1.GetModel();
+//		transform1.GetMVP(camera1);
+
+#if 0
 		float sinCounter = sinf(counter);
 		float cosCounter = cosf(counter);
 
-		transform.GetPos().x = sinCounter;
-		transform.GetRot().z = cosCounter;
-		transform.GetRot().x = counter * 10;
-		transform.GetRot().y = counter * 10;
-		transform.GetRot().z = counter * 10;
+		transform1.GetPos().x = sinCounter;
+		transform1.GetRot().z = cosCounter;
+		transform1.GetRot().x = counter * 10;
+		transform1.GetRot().y = counter * 10;
+		transform1.GetRot().z = counter * 10;
 		//transform.SetScale(glm::vec3(cosCounter, cosCounter, cosCounter));
+#endif
 
-		shader.Bind();
-		texture.Bind(0);
-		shader.Update(transform, camera);
+		shader1.Bind();
+		texture1.Bind(0);
+		shader1.Update(transform1, camera1);
 
-		
-
-		
 		mesh2.draw();
-		window.swapBuffers();	
+		window1.swapBuffers();	
 		counter += 0.0001f;
 	}
 

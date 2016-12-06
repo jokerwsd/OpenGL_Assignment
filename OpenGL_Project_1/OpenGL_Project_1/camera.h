@@ -1,30 +1,146 @@
 #ifndef _CAMERA_H
 #define _CAMERA_H
+
+#include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+#include "window.h"
 
-class camera
+namespace cameraControl
 {
-public:
-	camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar)
+	class camera
 	{
-		m_perspective = glm::perspective(fov, aspect, zNear, zFar);
-		m_position = pos;
-		m_forward = glm::vec3(0, 0, 1);
-		m_up = glm::vec3(0, 1, 0);
+	public:
+		camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar);
+
+		inline glm::mat4 GetViewProjection() const
+		{
+//			return m_perspective * glm::lookAt(m_position, m_position + m_forward, m_up);
+			return m_perspective * glm::lookAt(m_eye, m_eye + m_forward, m_up);
+		}
+
+		void LookAt(const glm::vec3& target);
+		glm::mat4 m_perspective;
+//		glm::vec3 m_position;
+
+		glm::vec3 m_forward;
+		glm::vec3 m_target;
+		glm::vec3 m_up;
+
+		glm::vec3 m_eye;
+		glm::mat4 m_viewMatr;
+
+	private:
+
+	};
+
+	class trackball
+	{
+	public:
+		/**
+		* @param cam = pointer to active camera object.
+		* @param screenSize - size of the window screen.
+		*/
+		static trackball& GetInstance(camera* cam, glm::vec4 screenSize);
+
+		void Init(window *win);
+
+		void Update();
+
+		void MouseUp();
+
+		void KeyUp();
+
+		void MouseDown(int button, int action, int mods, int xpos, int ypos);
+
+		void MouseMove(int xpos, int ypos);
+
+		void KeyDown(int key);
+
+		void MouseWheel(double xoffset, double yoffset);
+
+
+		float m_rotateSpeed;
+		float m_zoomSpeed;
+		float m_panSpeed;
+		float m_dynamicDampingFactor;
+		float m_minDistance;
+		float m_maxDistance;
+		bool m_enabled;
+		bool m_noRotate;
+		bool m_noZoom;
+		bool m_noPan;
+		bool m_noRoll;
+		bool m_staticMoving;
+
+//	private:
+		trackball(camera* cam, glm::vec4 screenSize);
+
+		glm::vec3 GetMouseProjectionOnBall(int clientX, int clientY);
+
+		glm::vec2 GetMouseOnScreen(int clientX, int clientY);
+
+		void  RotateCamera();
+
+		void ZoomCamera();
+
+		void PanCamera();
+
+		void CheckDistances();
+
+		enum class TCB_STATE :uint8_t {
+			NONE,
+			ROTATE,
+			ZOOM,
+			PAN
+		};
+
+		camera* m_pCam;
+		glm::vec4 m_screen;
+
+
+		glm::vec3 m_target;
+		glm::vec3 m_lastPos;
+		glm::vec3 m_eye;
+		glm::vec3 m_rotStart;
+		glm::vec3 m_rotEnd;
+		glm::vec2 m_zoomStart;
+		glm::vec2 m_zoomEnd;
+		glm::vec2 m_panStart;
+		glm::vec2 m_panEnd;
+		TCB_STATE m_state;
+		TCB_STATE m_prevState;
+
+		static uint32_t m_keys[3];
+
+	};
+
+	inline glm::vec2 trackball::GetMouseOnScreen(int clientX, int clientY)
+	{
+		return glm::vec2(
+			(float)(clientX - m_screen.x) / m_screen.z,
+			(float)(clientY - m_screen.y) / m_screen.w
+		);
 	}
 
-	inline glm::mat4 GetViewProjection() const
-	{
-		return m_perspective * glm::lookAt(m_position, m_position + m_forward, m_up);
+
+	inline void trackball::MouseUp() {
+
+		if (!m_enabled)return;
+
+		m_state = TCB_STATE::NONE;
+
 	}
 
-private:
-	glm::mat4 m_perspective;
-	glm::vec3 m_position;
-	glm::vec3 m_forward;
-	glm::vec3 m_up;
-};
+	inline void trackball::KeyUp() {
+
+		if (!m_enabled) { return; }
+
+		m_state = m_prevState;
+
+	};
+
+}
 
 
 #endif

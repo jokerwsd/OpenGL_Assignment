@@ -1,8 +1,11 @@
 #ifndef _TRANSFORM_H
 #define _TRANSFORM_H
 
+#include "camera.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
+
+using namespace cameraControl;
 
 struct transform
 {
@@ -24,6 +27,15 @@ public:
 		glm::mat4 rotMatrix = rotXMatrix * rotYMatrix * rotZMatrix;
 
 		return posMatrix * rotMatrix * scaleMatrix;
+	}
+
+	inline glm::mat4 GetMVP(const camera& camera) const
+	{
+		glm::mat4 VP = camera.GetViewProjection();
+		glm::mat4 M = GetModel();
+		
+
+		return VP * M;//camera.GetViewProjection() * GetModel();
 	}
 
 	inline glm::vec3& GetPos() { return m_pos; }

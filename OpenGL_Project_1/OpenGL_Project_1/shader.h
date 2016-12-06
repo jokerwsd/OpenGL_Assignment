@@ -27,7 +27,6 @@ private:
 	enum
 	{
 		TRANSFORM_U,
-
 		NUM_UNIFORMS
 	};
 

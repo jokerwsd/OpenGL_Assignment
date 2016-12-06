@@ -3,8 +3,10 @@
 #include <fstream>
 #include <vector>
 #include "transform.h"
+#include <glm/gtc/type_ptr.hpp>
 
 using namespace std;
+using namespace cameraControl;
 
 shader::shader(const std::string& filename)
 {
@@ -50,10 +52,20 @@ void shader::Bind()
 
 void shader::Update(const transform& transform, const camera& camera)
 {
-	glm::mat4 model = camera.GetViewProjection() * transform.GetModel();
 
-	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
+	glm::mat4 mvp = transform.GetMVP(camera);
+	glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &mvp[0][0]);
 
+	//glm::mat4 model = transform.GetModel();
+	//glm::mat4 MVP = transform.GetMVP(camera);
+	//glm::mat4 Normal = transform.GetModel();
+
+	//glUniformMatrix4fv(uniforms[0], 1, GL_FALSE, &MVP[0][0]);
+	//glUniformMatrix4fv(uniforms[1], 1, GL_FALSE, &Normal[0][0]);
+	//glUniform3f(uniforms[2], 0.0f, 0.0f, 1.0f);
+
+	//glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, &model[0][0]);
+	//glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, glm::value_ptr(mvp));
 }
 
 GLuint shader::CreateShader(const std::string& text, GLenum shaderType)
