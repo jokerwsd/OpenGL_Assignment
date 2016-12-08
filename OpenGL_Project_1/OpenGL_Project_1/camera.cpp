@@ -17,9 +17,8 @@ namespace cameraControl
 	camera::camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar)
 	{
 		m_perspective = glm::perspective(fov, aspect, zNear, zFar);
-//		m_position = pos;
 		m_eye = pos;
-		m_forward = glm::vec3(0, 0, 1);
+		m_viewMatr = glm::mat4(1.0f);
 		m_up = glm::vec3(0, 1, 0);
 	}
 
@@ -109,7 +108,7 @@ namespace cameraControl
 	void trackball::Update() {
 		//   _eye.setFrom( object.position ).sub( target );
 		m_eye = m_pCam->m_eye - m_target;
-		//	m_eye -= m_eye  - m_target  ; // Vector3.Subtract(_eye, _target);
+		//m_eye -= m_eye  - m_target  ; // Vector3.Subtract(_eye, _target);
 		if (!m_noRotate)
 		{
 			RotateCamera();
@@ -142,23 +141,15 @@ namespace cameraControl
 
 		if (!isnan(angle) && angle != 0.0f)
 		{
-			glm::vec3 axis = glm::normalize(glm::cross(m_rotStart, m_rotEnd)); //_rotateStart.cross(_rotateEnd).normalize();
-																			   //   axis.Normalize();
-																			   //axis.y*=-1.0f;///need to invert y as rotate seems to be in opposite to mouse move direction.
+			glm::vec3 axis = glm::normalize(glm::cross(m_rotStart, m_rotEnd)); 
+
 			if (glm::isnan(axis.x) || glm::isnan(axis.y) || glm::isnan(axis.z))
 				return;
 			glm::quat quaternion;// Quaternion quaternion = Quaternion.Identity;
 			angle *= m_rotateSpeed;
 			quaternion = glm::angleAxis(-angle, axis);
-			//  quaternion.setAxisAngle(axis, angle);
-			// quaternion = Quaternion.FromAxisAngle(axis, -angle);
-			//quaternion.rotate(_eye);
-			//   _eye = Vector3.Transform(_eye, quaternion);
-
 			m_eye = glm::rotate(quaternion, m_eye);
-			//  quaternion.rotate(object.up);
 			m_pCam->m_up = glm::rotate(quaternion, m_pCam->m_up);
-			//  quaternion.rotate(_rotateEnd);
 			m_rotEnd = glm::rotate(quaternion, m_rotEnd);
 			if (m_staticMoving)
 			{
@@ -194,16 +185,12 @@ namespace cameraControl
 		glm::vec2 mouseChange = m_panEnd - m_panStart;
 		if (glm::length(mouseChange) != 0.0f)
 		{
-			// mouseChange.scale( _eye.Length * _panSpeed );
 			mouseChange *= glm::length(m_eye) * m_panSpeed;
-			//   Vector3 pan = _eye.cross( object.up ).normalize().scale( mouseChange.x );
 			glm::vec3 pan = glm::normalize(glm::cross(m_eye, m_pCam->m_up));
 			pan *= mouseChange.x;
-			// pan += object.up.clone().normalize().scale( mouseChange.Y );
 			glm::vec3 camUpClone = glm::normalize(m_pCam->m_up);
 			camUpClone *= mouseChange.y;
 			pan += camUpClone;
-			//object.position.add( pan );
 			m_pCam->m_eye += pan;
 			m_target += pan;
 			if (m_staticMoving)
@@ -229,9 +216,7 @@ namespace cameraControl
 			}
 			if (glm::length2(m_eye) < m_minDistance * m_minDistance)
 			{
-				// object.position = target + _eye.normalize().scale(minDistance);
 				m_eye = glm::normalize(m_eye) * m_minDistance;
-				// _camObject._pos = _target + _eye;
 				m_pCam->m_eye = m_target + m_eye;
 			}
 		}
@@ -267,13 +252,10 @@ namespace cameraControl
 		m_eye = m_target - m_pCam->m_eye;
 		glm::vec3 upClone = m_pCam->m_up;
 		upClone = glm::normalize(upClone);
-		//object.up.clone().normalize().scale(mouseOnBall.y);
 		glm::vec3 projection = upClone * mouseOnBall.y;
-		//  projection.add(object.up.cross(_eye).normalize().scale(mouseOnBall.x));
 		glm::vec3 cross = glm::normalize(glm::cross(m_pCam->m_up, m_eye));
 		cross *= mouseOnBall.x;
 		projection += cross;
-		//  projection.add(_eye.normalize().scale(mouseOnBall.z));
 		glm::vec3 eyeClone = glm::normalize(m_eye);
 		projection += eyeClone * mouseOnBall.z;
 		return projection;
@@ -315,8 +297,6 @@ namespace cameraControl
 		if (!m_enabled) return;
 
 		m_prevState = m_state;
-
-		//   var state = OpenTK.Input.Keyboard.GetState();
 
 		if (m_state != TCB_STATE::NONE)
 		{

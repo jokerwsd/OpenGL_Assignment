@@ -15,15 +15,12 @@ namespace cameraControl
 
 		inline glm::mat4 GetViewProjection() const
 		{
-//			return m_perspective * glm::lookAt(m_position, m_position + m_forward, m_up);
-			return m_perspective * glm::lookAt(m_eye, m_eye + m_forward, m_up);
+			return m_perspective * glm::lookAt(m_eye, m_target, m_up);
 		}
 
 		void LookAt(const glm::vec3& target);
 		glm::mat4 m_perspective;
-//		glm::vec3 m_position;
 
-		glm::vec3 m_forward;
 		glm::vec3 m_target;
 		glm::vec3 m_up;
 

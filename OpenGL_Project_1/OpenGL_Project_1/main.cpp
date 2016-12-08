@@ -29,16 +29,14 @@ int main()
 	mesh mesh1(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 #endif
 
-	mesh mesh2("monkey.obj");
+	mesh mesh2("..//res//monkey.obj");
 
-	shader shader1("basicShader");
+	shader shader1("..//res//basicShader");
 
-	texture texture1("bricks.jpg");
+	texture texture1("..//res//fur.jpg");
 
 	camera camera1(glm::vec3(0, 0, -4), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
 	
-//	trackball trackball1(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
-//	trackball trackball1 = trackball::GetInstance(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
 	trackball* trackball1 = &trackball::GetInstance(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
 	trackball1->Init(&window1);
 
@@ -52,9 +50,6 @@ int main()
 		window1.clear(0.0f, 0.15f, 0.3f, 1.0f);
 
 		trackball1->Update();
-//		glm::mat4 myCameraMatrix = camera1.m_viewMatr;
-//		glm::mat4 mvp = camera1.GetViewProjection() * camera1.m_viewMatr * transform1.GetModel();
-//		transform1.GetMVP(camera1);
 
 #if 0
 		float sinCounter = sinf(counter);
@@ -77,66 +72,6 @@ int main()
 		counter += 0.0001f;
 	}
 
-#if 0
-	GLFWwindow* MainWindow;
-//	glfunc *gl = new glfunc(SCREEN_WIDTH, SCREEN_HEIGHT);
-//	window *new_window = new window(SCREEN_WIDTH, SCREEN_HEIGHT, "Main Window");
-//	gl->initGL();
-	if (!glfwInit()) return 5555;
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-	MainWindow = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OBJLoader", NULL, NULL);
-	if (!MainWindow)
-		{
-			glfwTerminate();
-			return -44444;
-		}
-	
-
-	while (!glfwWindowShouldClose(MainWindow))
-	{
-
-		// Clear the color and depth buffers.
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		// We don't want to modify the projection matrix. */
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		//glTranslatef( 0.0f, 0.0f, -6.0f );
-		// Move down the z-axis.
-		glTranslatef(0.0, 0.0, -5.0);
-		glRotatef(120, 1.0, 1.0, 0.0);
-
-
-		glBegin(GL_TRIANGLES);
-		glColor3f(0.1, 0.2, 0.3);
-		glVertex3f(0, 0, 0);
-		glVertex3f(1, 0, 0);
-		glVertex3f(0, 1, 0);
-		glEnd();
-
-		int nodesSize = vertices.size();
-		int i;
-		for (i = 0; i<nodesSize; i++)
-		{
-			glNormal3f(normals[i].x, normals[i].y, normals[i].z);
-			glVertex3f(vertices[i].x, vertices[i].y, vertices[i].z);
-		}
-		glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(glm::vec3), &vertices[0], GL_STATIC_DRAW);
-
-		glfwSwapBuffers(MainWindow);
-		glfwPollEvents();
-		
-	}
-
-	while (true)
-	{
-
-		gl->renderGL(MainWindow);
-	}
-#endif
 	return 0;
 }
 
