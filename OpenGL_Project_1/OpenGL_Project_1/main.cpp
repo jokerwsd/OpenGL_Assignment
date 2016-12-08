@@ -6,16 +6,13 @@
 #include "transform.h"
 #include "camera.h"
 
-//#include "glfunc.h"
-//#include "methods.h"
-
 static const int SCREEN_WIDTH = 800;
 static const int SCREEN_HEIGHT = 600;
 using namespace cameraControl;
 
 int main()
 {
-	window window1((int)800, int(800), "Main Window");
+	Window window1((int)800, int(800), "Main Window");
 
 #if 0
 	vertex vertices[] = {
@@ -29,18 +26,18 @@ int main()
 	mesh mesh1(vertices, sizeof(vertices) / sizeof(vertices[0]), indices, sizeof(indices) / sizeof(indices[0]));
 #endif
 
-	mesh mesh2("..//res//monkey.obj");
+	Mesh mesh2("..//res//monkey.obj");
 
-	shader shader1("..//res//basicShader");
+	Shader shader1("..//res//basicShader");
 
-	texture texture1("..//res//fur.jpg");
+	Texture texture1("..//res//fur.jpg");
 
-	camera camera1(glm::vec3(0, 0, -4), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
+	Camera camera1(glm::vec3(0, 0, -4), 70.0f, (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT, 0.01f, 1000.0f);
 	
-	trackball* trackball1 = &trackball::GetInstance(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
+	Trackball* trackball1 = &Trackball::GetInstance(&camera1, glm::vec4(0.0f, 0.0f, (float)SCREEN_WIDTH, (float)SCREEN_HEIGHT));
 	trackball1->Init(&window1);
 
-	transform transform1;
+	Transform transform1;
 
 	float counter = 0.0f;
 

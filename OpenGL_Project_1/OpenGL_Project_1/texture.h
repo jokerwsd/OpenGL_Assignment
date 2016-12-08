@@ -4,16 +4,16 @@
 #include <string>
 #include <GL/glew.h>
 
-class texture
+class Texture
 {
 public:
-	texture(const std::string& fileName);
+	Texture(const std::string& fileName);
 	void Bind(unsigned int unit);
-	virtual ~texture();
+	virtual ~Texture();
 
 private:
-	texture(const texture& texture) {}
-	void operator=(const texture& texture) {}
+	Texture(const Texture& texture) {}
+	void operator=(const Texture& texture) {}
 
 	GLuint m_texture;
 };

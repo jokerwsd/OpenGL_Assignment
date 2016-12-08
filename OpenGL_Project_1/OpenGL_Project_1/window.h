@@ -4,15 +4,15 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
-class window
+class Window
 {
 public:
-	window(int width, int height, const std::string& title);
+	Window(int width, int height, const std::string& title);
 
 	void clear(float r, float g, float b, float a);
 	void swapBuffers();
 
-	virtual ~window();
+	virtual ~Window();
 	
 	GLFWwindow* MainWindow;
 //	void windowResize(GLFWwindow* main_window, int width, int height);

@@ -7,10 +7,10 @@
 #include <vector>
 #include "obj_loader.h"
 
-struct vertex
+struct Vertex
 {
 public: 
-	vertex(const glm::vec3& pos, const glm::vec2& texCoord, const glm::vec3& normal)	
+	Vertex(const glm::vec3& pos, const glm::vec2& texCoord, const glm::vec3& normal)	
 	{
 		this->pos = pos;
 		this->texCoord = texCoord;
@@ -26,14 +26,14 @@ private:
 	glm::vec3 normal;
 };
 
-class mesh
+class Mesh
 {
 public:
-	mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
-	mesh(const std::string& filename);
+	Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices);
+	Mesh(const std::string& filename);
 
 	void draw();
-	virtual ~mesh();
+	virtual ~Mesh();
 private:
 	void InitMesh(const IndexedModel& model);
 	enum

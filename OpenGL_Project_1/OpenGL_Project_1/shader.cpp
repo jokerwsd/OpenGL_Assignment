@@ -8,7 +8,7 @@
 using namespace std;
 using namespace cameraControl;
 
-shader::shader(const std::string& filename)
+Shader::Shader(const std::string& filename)
 {
 	program = glCreateProgram();
 	
@@ -34,7 +34,7 @@ shader::shader(const std::string& filename)
 }
 
 
-shader::~shader()
+Shader::~Shader()
 {
 	for (unsigned int i = 0; i < NUM_SHADERS; i++)
 	{
@@ -45,12 +45,12 @@ shader::~shader()
 	glDeleteProgram(program);
 }
 
-void shader::Bind()
+void Shader::Bind()
 {
 	glUseProgram(program);
 }
 
-void shader::Update(const transform& transform, const camera& camera)
+void Shader::Update(const Transform& transform, const Camera& camera)
 {
 
 	glm::mat4 mvp = transform.GetMVP(camera);
@@ -68,7 +68,7 @@ void shader::Update(const transform& transform, const camera& camera)
 	//glUniformMatrix4fv(uniforms[TRANSFORM_U], 1, GL_FALSE, glm::value_ptr(mvp));
 }
 
-GLuint shader::CreateShader(const std::string& text, GLenum shaderType)
+GLuint Shader::CreateShader(const std::string& text, GLenum shaderType)
 {
 	GLuint shader = glCreateShader(shaderType);
 	if (shader == 0)
@@ -88,7 +88,7 @@ GLuint shader::CreateShader(const std::string& text, GLenum shaderType)
 	return shader;
 }
 
-std::string shader::LoadShader(const std::string& fileName)
+std::string Shader::LoadShader(const std::string& fileName)
 {
 	std::ifstream file;
 	file.open((fileName).c_str());
@@ -112,7 +112,7 @@ std::string shader::LoadShader(const std::string& fileName)
 	return output;
 }
 
-void shader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
+void Shader::CheckShaderError(GLuint shader, GLuint flag, bool isProgram, const std::string& errorMessage)
 {
 	GLint success = 0;
 	GLchar error[1024] = { 0 };

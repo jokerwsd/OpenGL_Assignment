@@ -4,7 +4,7 @@
 #include <iostream>
 
 
-texture::texture(const std::string& fileName)
+Texture::Texture(const std::string& fileName)
 {
 	int width, height, numComponents;
 	unsigned char* data = stbi_load((fileName).c_str(), &width, &height, &numComponents, 4);
@@ -25,12 +25,12 @@ texture::texture(const std::string& fileName)
 }
 
 
-texture::~texture()
+Texture::~Texture()
 {
 	glDeleteTextures(1, &m_texture);
 }
 
-void texture::Bind(unsigned int unit)
+void Texture::Bind(unsigned int unit)
 {
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 }

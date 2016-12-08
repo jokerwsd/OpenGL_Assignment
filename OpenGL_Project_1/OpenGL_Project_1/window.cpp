@@ -3,7 +3,7 @@
 #include <iostream>
 
 using namespace std;
-window::window(int width, int height, const std::string& title)
+Window::Window(int width, int height, const std::string& title)
 {
 	if (!glfwInit()) throw std::runtime_error("glfwInitWindow failed. Can your hardware handle OpenGL 4.2?");
 	// open a window with GLFW
@@ -43,19 +43,19 @@ window::window(int width, int height, const std::string& title)
 	glCullFace(GL_BACK);
 }
 
-window::~window()
+Window::~Window()
 {
 	glfwDestroyWindow(MainWindow);
 	glfwTerminate();
 }
 
-void window::clear(float r, float g, float b, float a)
+void Window::clear(float r, float g, float b, float a)
 {
 	glClearColor(r, g, b, a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void window::swapBuffers()
+void Window::swapBuffers()
 {
 	glfwPollEvents();
 	glfwSwapBuffers(MainWindow);

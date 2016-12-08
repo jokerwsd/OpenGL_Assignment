@@ -11,10 +11,10 @@
 
 namespace cameraControl
 {
-	uint32_t trackball::m_keys[3] = { 65 /*A*/, 83 /*S*/, 68 /*D*/ };
-	static trackball* s_instance = nullptr;
+	uint32_t Trackball::m_keys[3] = { 65 /*A*/, 83 /*S*/, 68 /*D*/ };
+	static Trackball* s_instance = nullptr;
 
-	camera::camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar)
+	Camera::Camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar)
 	{
 		m_perspective = glm::perspective(fov, aspect, zNear, zFar);
 		m_eye = pos;
@@ -22,11 +22,11 @@ namespace cameraControl
 		m_up = glm::vec3(0, 1, 0);
 	}
 
-	void camera::LookAt(const glm::vec3& m_target) {
+	void Camera::LookAt(const glm::vec3& m_target) {
 		m_viewMatr = glm::lookAt(m_eye, m_target, m_up);
 	}
 
-	trackball::trackball(camera* cam, glm::vec4 screenSize)
+	Trackball::Trackball(Camera* cam, glm::vec4 screenSize)
 	{
 		this->m_pCam = cam;
 		this->m_screen = screenSize;
@@ -55,9 +55,9 @@ namespace cameraControl
 		m_panEnd = glm::vec2(0.0);
 	}
 
-	trackball& trackball::GetInstance(camera* cam, glm::vec4 screenSize) 
+	Trackball& Trackball::GetInstance(Camera* cam, glm::vec4 screenSize) 
 	{
-		static trackball instance(cam, screenSize);
+		static Trackball instance(cam, screenSize);
 		s_instance = &instance;
 		return instance;
 	}
@@ -97,7 +97,7 @@ namespace cameraControl
 	//-----------------------------------------------------------------------------------------------
 
 
-	void trackball::Init(window* win) 
+	void Trackball::Init(Window* win) 
 	{
 		glfwSetCursorPosCallback(win->MainWindow, &MouseMoveCallBack);
 		glfwSetMouseButtonCallback(win->MainWindow, &MouseButtonCallBack);
@@ -105,7 +105,7 @@ namespace cameraControl
 		glfwSetKeyCallback(win->MainWindow, &KeyboardCallBack);
 	}
 
-	void trackball::Update() {
+	void Trackball::Update() {
 		//   _eye.setFrom( object.position ).sub( target );
 		m_eye = m_pCam->m_eye - m_target;
 		//m_eye -= m_eye  - m_target  ; // Vector3.Subtract(_eye, _target);
@@ -135,7 +135,7 @@ namespace cameraControl
 		}
 	}
 
-	void trackball::RotateCamera()
+	void Trackball::RotateCamera()
 	{
 		float angle = (float)acos(glm::dot(m_rotStart, m_rotEnd) / glm::length(m_rotStart) / glm::length(m_rotEnd));
 
@@ -163,7 +163,7 @@ namespace cameraControl
 		}
 	}
 
-	void trackball::ZoomCamera()
+	void Trackball::ZoomCamera()
 	{
 		float factor = 1.0f + (float)(m_zoomEnd.y - m_zoomStart.y) * m_zoomSpeed;
 		if (factor != 1.0f && factor > 0.0f)
@@ -180,7 +180,7 @@ namespace cameraControl
 		}
 	}
 
-	void trackball::PanCamera()
+	void Trackball::PanCamera()
 	{
 		glm::vec2 mouseChange = m_panEnd - m_panStart;
 		if (glm::length(mouseChange) != 0.0f)
@@ -204,7 +204,7 @@ namespace cameraControl
 		}
 	}
 
-	void trackball::CheckDistances()
+	void Trackball::CheckDistances()
 	{
 		if (!m_noZoom || !m_noPan)
 		{
@@ -222,7 +222,7 @@ namespace cameraControl
 		}
 	}
 
-	glm::vec3 trackball::GetMouseProjectionOnBall(int clientX, int clientY)
+	glm::vec3 Trackball::GetMouseProjectionOnBall(int clientX, int clientY)
 	{
 		glm::vec3 mouseOnBall = glm::vec3(
 			((float)clientX - (float)m_screen.z * 0.5f) / (float)(m_screen.z * 0.5f),
@@ -261,7 +261,7 @@ namespace cameraControl
 		return projection;
 	}
 
-	void trackball::MouseDown(int button, int action, int mods, int xpos, int ypos) {
+	void Trackball::MouseDown(int button, int action, int mods, int xpos, int ypos) {
 		if (!m_enabled) { return; }
 		if (m_state == TCB_STATE::NONE)
 		{
@@ -292,7 +292,7 @@ namespace cameraControl
 		}
 	}
 
-	void trackball::KeyDown(int key) {
+	void Trackball::KeyDown(int key) {
 
 		if (!m_enabled) return;
 
@@ -324,7 +324,7 @@ namespace cameraControl
 		}
 	}
 
-	void trackball::MouseWheel(double xoffset, double yoffset) {
+	void Trackball::MouseWheel(double xoffset, double yoffset) {
 
 		if (!m_enabled) { return; }
 
@@ -343,7 +343,7 @@ namespace cameraControl
 		m_zoomStart.y += delta * 0.05f;
 	}
 
-	void trackball::MouseMove(int xpos, int ypos) {
+	void Trackball::MouseMove(int xpos, int ypos) {
 		if (!m_enabled) { return; }
 
 		if (m_state == TCB_STATE::ROTATE && !m_noRotate)

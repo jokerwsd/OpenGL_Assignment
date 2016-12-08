@@ -2,13 +2,13 @@
 #include "obj_loader.h"
 #include <vector>
 
-mesh::mesh(const std::string& filename)
+Mesh::Mesh(const std::string& filename)
 {
 	IndexedModel model = OBJModel(filename).ToIndexedModel();
 	InitMesh(model);
 }
 
-mesh::mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
+Mesh::Mesh(Vertex* vertices, unsigned int numVertices, unsigned int* indices, unsigned int numIndices)
 {
 
 	IndexedModel model;
@@ -68,12 +68,12 @@ mesh::mesh(vertex* vertices, unsigned int numVertices, unsigned int* indices, un
 }
 
 
-mesh::~mesh()
+Mesh::~Mesh()
 {
 	glDeleteVertexArrays(1, &vertexArrayObject);
 }
 
-void mesh::InitMesh(const IndexedModel& model)
+void Mesh::InitMesh(const IndexedModel& model)
 {
 	drawCount = model.indices.size();
 	
@@ -111,7 +111,7 @@ void mesh::InitMesh(const IndexedModel& model)
 	glBindVertexArray(0);
 }
 
-void mesh::draw()
+void Mesh::draw()
 {
 	glBindVertexArray(vertexArrayObject);
 	glDrawElements(GL_TRIANGLES, drawCount, GL_UNSIGNED_INT, 0);//draw all the data we have in the buffer

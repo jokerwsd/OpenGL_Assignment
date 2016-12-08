@@ -8,10 +8,10 @@
 
 namespace cameraControl
 {
-	class camera
+	class Camera
 	{
 	public:
-		camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar);
+		Camera(const glm::vec3& pos, float fov, float aspect, float zNear, float zFar);
 
 		inline glm::mat4 GetViewProjection() const
 		{
@@ -31,16 +31,16 @@ namespace cameraControl
 
 	};
 
-	class trackball
+	class Trackball
 	{
 	public:
 		/**
 		* @param cam = pointer to active camera object.
 		* @param screenSize - size of the window screen.
 		*/
-		static trackball& GetInstance(camera* cam, glm::vec4 screenSize);
+		static Trackball& GetInstance(Camera* cam, glm::vec4 screenSize);
 
-		void Init(window *win);
+		void Init(Window *win);
 
 		void Update();
 
@@ -71,7 +71,7 @@ namespace cameraControl
 		bool m_staticMoving;
 
 //	private:
-		trackball(camera* cam, glm::vec4 screenSize);
+		Trackball(Camera* cam, glm::vec4 screenSize);
 
 		glm::vec3 GetMouseProjectionOnBall(int clientX, int clientY);
 
@@ -92,7 +92,7 @@ namespace cameraControl
 			PAN
 		};
 
-		camera* m_pCam;
+		Camera* m_pCam;
 		glm::vec4 m_screen;
 
 
@@ -112,7 +112,7 @@ namespace cameraControl
 
 	};
 
-	inline glm::vec2 trackball::GetMouseOnScreen(int clientX, int clientY)
+	inline glm::vec2 Trackball::GetMouseOnScreen(int clientX, int clientY)
 	{
 		return glm::vec2(
 			(float)(clientX - m_screen.x) / m_screen.z,
@@ -121,7 +121,7 @@ namespace cameraControl
 	}
 
 
-	inline void trackball::MouseUp() {
+	inline void Trackball::MouseUp() {
 
 		if (!m_enabled)return;
 
@@ -129,7 +129,7 @@ namespace cameraControl
 
 	}
 
-	inline void trackball::KeyUp() {
+	inline void Trackball::KeyUp() {
 
 		if (!m_enabled) { return; }
 

@@ -7,10 +7,10 @@
 
 using namespace cameraControl;
 
-struct transform
+struct Transform
 {
 public:
-	transform(const glm::vec3& pos = glm::vec3(),
+	Transform(const glm::vec3& pos = glm::vec3(),
 		const glm::vec3& rot = glm::vec3(),
 		const glm::vec3& scale = glm::vec3(1.0f, 1.0f, 1.0f)) :
 		m_pos(pos),
@@ -29,7 +29,7 @@ public:
 		return posMatrix * rotMatrix * scaleMatrix;
 	}
 
-	inline glm::mat4 GetMVP(const camera& camera) const
+	inline glm::mat4 GetMVP(const Camera& camera) const
 	{
 		glm::mat4 VP = camera.GetViewProjection();
 		glm::mat4 M = GetModel();
