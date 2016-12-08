@@ -7,12 +7,12 @@
 #include "camera.h"
 
 static const int SCREEN_WIDTH = 800;
-static const int SCREEN_HEIGHT = 600;
+static const int SCREEN_HEIGHT = 800;
 using namespace cameraControl;
 
 int main()
 {
-	Window window1((int)800, int(800), "Main Window");
+	Window window1(SCREEN_WIDTH, SCREEN_HEIGHT, "Main Window");
 
 #if 0
 	vertex vertices[] = {
